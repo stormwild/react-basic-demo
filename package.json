@@ -1,11 +1,25 @@
 {
   "name": "react-basic-demo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Learning React Basics",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Alexander Torrijos",
+  "license": "UNLICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stormwild/react-basic-demo.git"
+  },
+  "keywords": [
+    "ReactJs"
+  ],
+  "bugs": {
+    "url": "https://github.com/stormwild/react-basic-demo/issues"
+  },
+  "homepage": "https://github.com/stormwild/react-basic-demo#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
