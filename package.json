@@ -8,7 +8,9 @@
     "build": "webpack -p",
     "dev": "webpack",
     "watch": "webpack -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix src/**/*.js",
+    "prettify": "prettier --write src/**/*.js"
   },
   "author": "Alexander Torrijos",
   "license": "UNLICENSE",
@@ -31,11 +33,34 @@
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "@babel/preset-react": "^7.8.3",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
     "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint",
+      "pretty-quick —-staged",
+      "git add"
+    ]
   }
 }

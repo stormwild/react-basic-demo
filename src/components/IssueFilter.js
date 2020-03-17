@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-export class IssueFilter extends Component {
-    render() {
-        return (<div>This is a placeholder for the issue filter.</div>);
-    }
-}
+import React from 'react';
+
+const IssueFilter = () => <div>This is a placeholder for the issue filter.</div>;
+
+export default IssueFilter;
