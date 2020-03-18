@@ -41,13 +41,6 @@ class IssueList extends Component {
 
   render() {
     const { issues } = this.state;
-    const sampleIssue = {
-      id: issues.length + 1,
-      status: 'New',
-      owner: 'Pieta',
-      title: 'Completion date should be optional',
-      created: new Date(),
-    };
 
     return (
       <>
@@ -56,7 +49,7 @@ class IssueList extends Component {
         <hr />
         <IssueTable issues={issues} />
         <hr />
-        <IssueAdd createIssue={() => this.createIssue(sampleIssue)} />
+        <IssueAdd createIssue={this.createIssue} issues={issues} />
       </>
     );
   }
