@@ -20,6 +20,10 @@ npm i @babel/core @babel/cli @babel/preset-env
 npm i @babel/preset-react
 ```
 
+## Demo
+
+![](docs/issue-tracker-screenshot.jpg)
+
 ## References
 
 - [Usage Guide · Babel](https://babeljs.io/docs/en/usage)
