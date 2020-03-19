@@ -2,7 +2,7 @@ import React from 'react';
 import IssueRow from './IssueRow';
 
 const IssueTable = ({ issues }) => {
-  const issueRows = issues.map(issue => <IssueRow key={issue.id} issue={issue} />);
+  const issueRows = issues ? issues.map(issue => <IssueRow key={issue.id} issue={issue} />) : [];
 
   return (
     <table className="table">

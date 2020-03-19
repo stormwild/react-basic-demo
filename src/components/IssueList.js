@@ -6,29 +6,36 @@ import IssueAdd from './IssueAdd';
 class IssueList extends Component {
   constructor() {
     super();
-    this.initialIssues = [
-      {
-        id: 1,
-        status: 'New',
-        owner: 'Ravan',
-        effort: 5,
-        created: new Date('2018-08-15'),
-        due: undefined,
-        title: 'Error in console when clicking Add',
-      },
-      {
-        id: 2,
-        status: 'Assigned',
-        owner: 'Eddie',
-        effort: 14,
-        created: new Date('2018-08-16'),
-        due: new Date('2018-08-30'),
-        title: 'Missing bottom border on panel',
-      },
-    ];
-
-    this.state = { issues: this.initialIssues };
+    this.state = { issues: [] };
     this.createIssue = this.createIssue.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadData();
+  }
+
+  async loadData() {
+    const query = `query {
+                    issueList {
+                      id
+                      status
+                      title
+                      effort
+                      owner
+                      created
+                      due
+                    }
+                  }`;
+
+    const result = await (
+      await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      })
+    ).json();
+    console.log(result.data);
+    this.setState({ issues: result.data.issueList });
   }
 
   createIssue(issue) {
