@@ -14,7 +14,7 @@ class IssueAdd extends Component {
     const issue = {
       owner: form.owner.value,
       title: form.title.value,
-      effort: form.effort.value,
+      effort: parseInt(form.effort.value, 10),
       due: new Date(form.due.value),
     };
 

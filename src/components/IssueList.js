@@ -41,12 +41,8 @@ class IssueList extends Component {
 
   async createIssue(issue) {
     const query = `
-      mutation {
-        addIssue(issue: {
-          title: "${issue.title}",
-          owner: "${issue.owner}",
-          due: "${issue.due.toISOString()}",
-        }) {
+      mutation addIssue($issue: IssueInputs!) {
+        addIssue(issue: $issue) {
           id
         }
       }
@@ -55,7 +51,7 @@ class IssueList extends Component {
     await fetch('/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ query, variables: { issue } }),
     });
 
     this.loadData();
