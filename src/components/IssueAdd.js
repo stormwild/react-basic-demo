@@ -9,14 +9,12 @@ class IssueAdd extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const form = document.forms.issueAdd;
-    const { issues, createIssue } = this.props;
+    const { createIssue } = this.props;
 
     const issue = {
-      id: issues.length + 1,
       owner: form.owner.value,
       title: form.title.value,
-      status: 'New',
-      created: new Date(),
+      effort: form.effort.value,
       due: new Date(form.due.value),
     };
 
@@ -32,6 +30,7 @@ class IssueAdd extends Component {
       <form className="form" name="issueAdd" onSubmit={this.handleSubmit}>
         <input type="text" name="owner" placeholder="Owner" />
         <input type="text" name="title" placeholder="Title" />
+        <input type="number" name="effort" placeholder="Effort" />
         <input type="date" name="due" placeholder="Due" />
         <button type="submit">Add</button>
       </form>

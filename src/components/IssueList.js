@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import IssueFilter from './IssueFilter';
 import IssueTable from './IssueTable';
 import IssueAdd from './IssueAdd';
+import reviver from '../utils/helpers';
 
 class IssueList extends Component {
   constructor() {
@@ -27,23 +28,37 @@ class IssueList extends Component {
                     }
                   }`;
 
-    const result = await (
-      await fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
-      })
-    ).json();
-    console.log(result.data);
+    const response = await fetch('/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
+    });
+    const body = await response.text();
+    const result = JSON.parse(body, reviver);
+
     this.setState({ issues: result.data.issueList });
   }
 
-  createIssue(issue) {
-    this.setState(state => {
-      const { issues } = state;
-      issues.push(issue);
-      return { issues };
+  async createIssue(issue) {
+    const query = `
+      mutation {
+        addIssue(issue: {
+          title: "${issue.title}",
+          owner: "${issue.owner}",
+          due: "${issue.due.toISOString()}",
+        }) {
+          id
+        }
+      }
+    `;
+
+    await fetch('/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
     });
+
+    this.loadData();
   }
 
   render() {
