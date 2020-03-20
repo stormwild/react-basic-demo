@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer, UserInputError } = require('apollo-server-express');
 
 const GraphQLDate = new GraphQLScalarType({
   name: 'GraphQLDate',
