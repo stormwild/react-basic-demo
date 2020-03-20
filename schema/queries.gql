@@ -1,0 +1,2 @@
+mutation addIssue($issue: IssueInputs!) { addIssue(issue: $issue) { id status }}
+	 { "issue": { "title": "Some time", "status": "New"}}

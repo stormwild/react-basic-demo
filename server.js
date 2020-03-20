@@ -12,10 +12,14 @@ const GraphQLDate = new GraphQLScalarType({
     return value.toISOString();
   },
   parseValue(value) {
-    return new Date(value);
+    const dateValue = new Date(value);
+    return isNaN(dateValue) ? undefined : dateValue;
   },
   parseLiteral(ast) {
-    return ast.kind == Kind.STRING ? new Date(ast.value) : undefined;
+    if (ast.kind == Kind.STRING) {
+      const value = new Date(ast.value);
+      return isNaN(value) ? undefined : value;
+    }
   },
 });
 
@@ -46,7 +50,24 @@ const setAboutMessage = (_, { message }) => {
   return (aboutMessage = message);
 };
 
+const validateIssue = (_, { issue }) => {
+  console.log(_, issue);
+  const errors = [];
+  if (issue.title.length < 3) {
+    errors.push('Field "title" must be at least 3 characters');
+  }
+
+  if (issue.status === 'Assigned' && !issue.owner) {
+    errors.push('Field "owner" required if status is "Assigned"');
+  }
+
+  if (errors.length > 0) {
+    throw new UserInputError('Invalid input(s)', { errors });
+  }
+};
+
 const addIssue = (_, { issue }) => {
+  validateIssue(_, { issue: issue });
   issue.id = issuesDB.length + 1;
   issue.created = new Date();
   issue.status = issue.status || 'New';
@@ -69,6 +90,10 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs: fs.readFileSync('schema/schema.gql', 'utf-8'),
   resolvers,
+  formatError: error => {
+    console.log(JSON.stringify(error));
+    return error;
+  },
 });
 
 const app = express();
