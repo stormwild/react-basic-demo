@@ -16,6 +16,7 @@ class IssueAdd extends Component {
       title: form.title.value,
       effort: parseInt(form.effort.value, 10),
       due: new Date(form.due.value),
+      status: form.status.value,
     };
 
     createIssue(issue);
@@ -32,6 +33,12 @@ class IssueAdd extends Component {
         <input type="text" name="title" placeholder="Title" />
         <input type="number" name="effort" placeholder="Effort" />
         <input type="date" name="due" placeholder="Due" />
+        <select name="status">
+          <option value="New">New</option>
+          <option value="Assigned">Assigned</option>
+          <option value="Fixed">Fixed</option>
+          <option value="Closed">Closed</option>
+        </select>
         <button type="submit">Add</button>
       </form>
     );

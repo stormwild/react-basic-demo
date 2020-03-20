@@ -27,16 +27,10 @@ class IssueList extends Component {
                       due
                     }
                   }`;
-
-    const response = await fetch('/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
-    });
-    const body = await response.text();
-    const result = JSON.parse(body, reviver);
-
-    this.setState({ issues: result.data.issueList });
+    const data = await this.graphQLFetch(query);
+    if (data) {
+      this.setState({ issues: data.issueList });
+    }
   }
 
   async createIssue(issue) {
@@ -48,13 +42,36 @@ class IssueList extends Component {
       }
     `;
 
-    await fetch('/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, variables: { issue } }),
-    });
+    const data = await this.graphQLFetch(query, { issue });
+    if (data) {
+      this.loadData();
+    }
+  }
 
-    this.loadData();
+  /* eslint-disable-next-line class-methods-use-this */
+  async graphQLFetch(query, variables = {}) {
+    try {
+      const response = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, variables }),
+      });
+      const body = await response.text();
+      const result = JSON.parse(body, reviver);
+      if (result.errors) {
+        const error = result.errors[0];
+        if (error.extensions.code === 'BAD_USER_INPUT') {
+          const details = error.extensions.exception.errors.join('\n ');
+          alert(`${error.message}:\n ${details}`);
+        } else {
+          alert(`${error.extensions.code}: ${error.message}`);
+        }
+      }
+      return result.data;
+    } catch (e) {
+      alert(`Error in sending data to server: ${e.message}`);
+    }
+    return undefined;
   }
 
   render() {
