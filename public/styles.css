@@ -31,6 +31,17 @@ body {
   margin-right: 1rem;
 }
 
+.form select {
+  -webkit-appearance: initial;
+}
+
+.form input[type='date'] {
+  padding: 0.3rem 0.75rem;
+}
+
 .form button {
   padding: 0.5rem 0.75rem;
+  background-color: #bdc3c7;
+  border-radius: 4px;
+  color: #fff;
 }
