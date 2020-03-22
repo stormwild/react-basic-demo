@@ -4,6 +4,10 @@ const express = require('express');
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const { ApolloServer, UserInputError } = require('apollo-server-express');
+const { MongoClient } = require('mongodb');
+
+const url = 'mongodb://localhost/issuetracker';
+let db;
 
 const GraphQLDate = new GraphQLScalarType({
   name: 'GraphQLDate',
@@ -46,6 +50,21 @@ const issuesDB = [
   },
 ];
 
+const issueList = async () => {
+  const issues = await db
+    .collection('issues')
+    .find({})
+    .toArray();
+  return issues;
+};
+
+const connectToDb = async () => {
+  const client = new MongoClient(url, { useNewUrlParser: true });
+  await client.connect();
+  console.log('Connected to MongoDB at', url);
+  db = client.db();
+};
+
 const setAboutMessage = (_, { message }) => {
   return (aboutMessage = message);
 };
@@ -67,7 +86,7 @@ const validateIssue = (_, { issue }) => {
 };
 
 const addIssue = (_, { issue }) => {
-  validateIssue(_, { issue: issue });
+  validateIssue(_, { issue });
   issue.id = issuesDB.length + 1;
   issue.created = new Date();
   issue.status = issue.status || 'New';
